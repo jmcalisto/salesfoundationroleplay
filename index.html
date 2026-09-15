@@ -6,7 +6,7 @@
 <title>Jack's first appointment — Sales Foundations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@144,500;144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#16304C; --ink2:#274A6D; --paper:#EAEEF3; --card:#FFFFFF;
@@ -27,7 +27,7 @@
     font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
     color:var(--accent);margin:0 0 6px;
   }
-  h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(28px,4.4vw,42px);
+  h1{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:clamp(28px,4.4vw,42px);
     line-height:1.05;margin:0 0 10px;letter-spacing:-.01em}
   .lede{color:var(--ink2);font-size:16.5px;max-width:62ch;margin:0 0 22px}
 
@@ -50,7 +50,7 @@
   .person img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;object-position:50% 32%;
     filter:saturate(1.02)}
   .person .meta{padding:14px 16px 16px}
-  .person .nm{font-family:"Fraunces",serif;font-weight:600;font-size:22px;line-height:1}
+  .person .nm{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:22px;line-height:1}
   .person .tag{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em;
     text-transform:uppercase;margin-top:6px}
   .mood{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);
@@ -102,7 +102,7 @@
   /* intro + debrief */
   .card-lg{background:var(--card);border:1px solid var(--line);border-radius:18px;
     box-shadow:var(--shadow);padding:30px 30px 28px}
-  .card-lg h2{font-family:"Fraunces",serif;font-weight:600;font-size:28px;margin:0 0 12px}
+  .card-lg h2{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:28px;margin:0 0 12px}
   .card-lg p{font-size:16px;color:var(--ink2);margin:0 0 14px;max-width:64ch}
   .pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;
     background:#F1F6FB;color:var(--accent);border:1px solid #CFE0EF;border-radius:99px;padding:5px 12px}
@@ -125,7 +125,7 @@
     <p class="lede">Jack saw our ad and booked an appointment. Today, you are the consultant. You already know he is a Career Learner — but that is not where you begin. Read what he says. Choose what to do next. Watch how the conversation changes with each choice. There is no score. What matters is the choice you make.</p>
     <div class="card-lg">
       <span class="pill">About 4 minutes · 5 choices</span>
-      <p style="margin-top:16px">Here you practise one simple habit — the habit that turns more appointments into sales. First, understand the person. Then find out what really matters to them. Only after that, show how we can help. Do it in this order, and you will feel the difference.</p>
+      <p style="margin-top:16px">Here you practice one simple habit — the habit that turns more appointments into sales. First, understand the person. Then find out what really matters to them. Only after that, show how we can help. Do it in this order, and you will feel the difference.</p>
       <button class="btn" onclick="start()">Sit down with Jack</button>
     </div>
     <p class="footnote">Wall Street English — Learning &amp; Development</p>
@@ -163,8 +163,8 @@
     <p class="eyebrow">Sales Foundations · Practice</p>
     <div class="card-lg">
       <h2>This is the whole idea.</h2>
-      <p>You waited until the end to talk about our course — and by then, Jack was ready to listen. That is the habit. Understand the person first. Find the feeling behind their words. Then show how we can help. When you offered the course too soon, Jack went quiet. When you asked a question instead, he opened up and told you more.</p>
-      <p>Our course did not change. What changed was you. You linked it to the real reason Jack came to see us: he wants to feel confident, and he wants to be respected.</p>
+      <p>You waited until the end to talk about our course — and by then, Jack was ready to listen. That is the habit. Understand the person first. Find the feeling behind their words. Then show how we can help. When you offer the course too soon, the prospect may go quiet. When you ask more questions instead, they open up and tell you more.</p>
+      <p>Our course has not changed. What changed was you. You linked it to the real reason Jack came to see us: he wants to feel confident, and he wants to be respected.</p>
       <div class="recap">When Jack arrived, he was at <b>Value Acknowledged</b> — "I can see this is worth doing." Your questions moved him to the next stage, <b>Choices Reviewed</b> — "I know who to do this with."</div>
       <div class="actions"><button class="btn ghost" onclick="restart()">Try it again</button></div>
     </div>
