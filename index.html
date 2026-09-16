@@ -6,7 +6,7 @@
 <title>Jack's first appointment — Sales Foundations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&family=Fraunces:opsz,wght@144,500;144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#16304C; --ink2:#274A6D; --paper:#EAEEF3; --card:#FFFFFF;
@@ -27,7 +27,7 @@
     font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
     color:var(--accent);margin:0 0 6px;
   }
-  h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(28px,4.4vw,42px);
+  h1{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:clamp(28px,4.4vw,42px);
     line-height:1.05;margin:0 0 10px;letter-spacing:-.01em}
   .lede{color:var(--ink2);font-size:16.5px;max-width:62ch;margin:0 0 22px}
 
@@ -50,7 +50,7 @@
   .person img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;object-position:50% 32%;
     filter:saturate(1.02)}
   .person .meta{padding:14px 16px 16px}
-  .person .nm{font-family:"Fraunces",serif;font-weight:600;font-size:22px;line-height:1}
+  .person .nm{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:22px;line-height:1}
   .person .tag{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em;
     text-transform:uppercase;margin-top:6px}
   .mood{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);
@@ -102,7 +102,7 @@
   /* intro + debrief */
   .card-lg{background:var(--card);border:1px solid var(--line);border-radius:18px;
     box-shadow:var(--shadow);padding:30px 30px 28px}
-  .card-lg h2{font-family:"Fraunces",serif;font-weight:600;font-size:28px;margin:0 0 12px}
+  .card-lg h2{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:28px;margin:0 0 12px}
   .card-lg p{font-size:16px;color:var(--ink2);margin:0 0 14px;max-width:64ch}
   .pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;
     background:#F1F6FB;color:var(--accent);border:1px solid #CFE0EF;border-radius:99px;padding:5px 12px}
@@ -113,19 +113,55 @@
   @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   .footnote{margin-top:26px;font-size:12px;color:var(--muted);text-align:center}
+
+  /* Fullscreen button — this activity is a scrolling page with no header card,
+     so the button is fixed: it costs no document height and stays reachable
+     while the page scrolls, which is the case it exists for.
+     NOTE: .stage in this file is a progress-rail chip, not a window frame.
+     Never add .stage-targeting fullscreen CSS here. */
+  .fs-btn{position:fixed;top:12px;inset-inline-end:14px;z-index:50;
+    display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;
+    background:#fff;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;
+    box-shadow:var(--shadow);font:inherit;font-size:12.5px;font-weight:600;
+    white-space:nowrap;cursor:pointer}
+  .fs-btn:hover{background:#F1F6FB}
+  .fs-btn:focus-visible{outline:3px solid #9cc4e6;outline-offset:2px}
+  .fs-btn.is-on{background:var(--accent);color:#fff}
+  /* Above ~1060px the button sits in the gutter beside the 960px .wrap; below
+     that it would land on the eyebrow and the rail. */
+  @media (max-width:1060px){ .eyebrow, #scene .rail{ padding-inline-end:145px } }
+
+  /* language switcher — top of the intro, where a learner chooses once.
+     ?lang= stays the primary mechanism for LMS embeds. */
+  .langbar{display:flex;justify-content:flex-end;margin:0 0 10px}
+  .langbar select{font:inherit;font-size:12.5px;font-weight:600;color:var(--accent);
+    background:#fff;border:1.5px solid var(--accent);border-radius:10px;
+    padding:5px 9px;cursor:pointer}
+  .langbar select:focus-visible{outline:3px solid #9cc4e6;outline-offset:2px}
+
+  /* ---------- right-to-left (Arabic) ----------
+     This activity is a scrolling page with no photo-anchored speakers, so the
+     whole layout mirrors cleanly. Fraunces has no Arabic glyphs. */
+  [dir="rtl"] body{font-family:'Noto Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif}
+  [dir="rtl"] h1,[dir="rtl"] .person .nm,[dir="rtl"] .card-lg h2{
+    font-family:'Noto Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;font-weight:700}
+  [dir="rtl"] .eyebrow{letter-spacing:0}
+  [dir="rtl"] .langbar{justify-content:flex-start}
 </style>
 </head>
 <body>
+<button class="fs-btn" id="fsBtn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg><span class="fs-label" aria-live="polite"></span></button>
 <div class="wrap">
 
   <!-- INTRO -->
   <section id="intro">
+    <div class="langbar"><select id="langsel" aria-label="Language"></select></div>
     <p class="eyebrow">Sales Foundations · Practice</p>
     <h1>Jack's first appointment</h1>
     <p class="lede">Jack saw our ad and booked an appointment. Today, you are the consultant. You already know he is a Career Learner — but that is not where you begin. Read what he says. Choose what to do next. Watch how the conversation changes with each choice. There is no score. What matters is the choice you make.</p>
     <div class="card-lg">
       <span class="pill">About 4 minutes · 5 choices</span>
-      <p style="margin-top:16px">Here you practise one simple habit — the habit that turns more appointments into sales. First, understand the person. Then find out what really matters to them. Only after that, show how we can help. Do it in this order, and you will feel the difference.</p>
+      <p style="margin-top:16px">Here you practice one simple habit — the habit that turns more appointments into sales. First, understand the person. Then find out what really matters to them. Only after that, show how we can help. Do it in this order, and you will feel the difference.</p>
       <button class="btn" onclick="start()">Sit down with Jack</button>
     </div>
     <p class="footnote">Wall Street English — Learning &amp; Development</p>
@@ -163,8 +199,8 @@
     <p class="eyebrow">Sales Foundations · Practice</p>
     <div class="card-lg">
       <h2>This is the whole idea.</h2>
-      <p>You waited until the end to talk about our course — and by then, Jack was ready to listen. That is the habit. Understand the person first. Find the feeling behind their words. Then show how we can help. When you offered the course too soon, Jack went quiet. When you asked a question instead, he opened up and told you more.</p>
-      <p>Our course did not change. What changed was you. You linked it to the real reason Jack came to see us: he wants to feel confident, and he wants to be respected.</p>
+      <p>You waited until the end to talk about our course — and by then, Jack was ready to listen. That is the habit. Understand the person first. Find the feeling behind their words. Then show how we can help. When you offer the course too soon, the prospect may go quiet. When you ask more questions instead, they open up and tell you more.</p>
+      <p>Our course has not changed. What changed was you. You linked it to the real reason Jack came to see us: he wants to feel confident, and he wants to be respected.</p>
       <div class="recap">When Jack arrived, he was at <b>Value Acknowledged</b> — "I can see this is worth doing." Your questions moved him to the next stage, <b>Choices Reviewed</b> — "I know who to do this with."</div>
       <div class="actions"><button class="btn ghost" onclick="restart()">Try it again</button></div>
     </div>
@@ -174,85 +210,542 @@
 </div>
 
 <script>
-const STAGES = ["Attention Grabbed","Value Acknowledged","Choices Reviewed","Cost/Risk/Effort","Price Considered","Desire to Buy","Value Gained"];
+/* =========================================================================
+   I18N — every language lives in this one file.
 
-const STEPS = [
-  {
-    says:"I saw your ad online. My English is okay, but… to be honest, I need to fix it. At work, other people get promoted, and I don't.",
+   This activity kept most of its learner-facing copy in the markup (intro,
+   debrief, buttons, the person card). None of that could be translated where
+   it sat, so it now lives here alongside the step copy, and the markup is
+   filled in at load.
+
+   Structure is declared ONCE in SHAPE: which rail stage each step lights, and
+   whether each option is strong / soft / weak. Only text is per-language.
+   Keeping the strong answer out of the translations is what stops it landing
+   in a different slot in one language only.
+
+   Language comes from ?lang=xx, then the browser, then English:
+       .../index.html?lang=it
+   ========================================================================= */
+
+const STAGE_COUNT = 7;
+const SHAPE = [
+  {stageNow:1, stageDone:[],     v:["soft","strong","weak"]},
+  {stageNow:1, stageDone:[],     v:["weak","strong","soft"]},
+  {stageNow:1, stageDone:[],     v:["soft","strong","weak"]},
+  {stageNow:1, stageDone:[0,1], moving:true, v:["soft","strong","weak"]},
+  {stageNow:2, stageDone:[0,1],  v:["weak","strong","soft"]}
+];
+
+const I18N = {
+
+/* ---------------------------------------------------------------- English */
+en:{
+  lang:"en",
+  fs:{ enter:"Fullscreen", exit:"Exit fullscreen", newtab:"Open in a new tab", hint:"Press F11 to fill your screen" },
+  eyebrow:"Sales Foundations · Practice",
+  title:"Jack's first appointment",
+  lede:"Jack saw our ad and booked an appointment. Today, you are the consultant. You already know he is a Career Learner — but that is not where you begin. Read what he says. Choose what to do next. Watch how the conversation changes with each choice. There is no score. What matters is the choice you make.",
+  pill:"About 4 minutes · 5 choices",
+  introBody:"Here you practice one simple habit — the habit that turns more appointments into sales. First, understand the person. Then find out what really matters to them. Only after that, show how we can help. Do it in this order, and you will feel the difference.",
+  startBtn:"Sit down with Jack",
+  footnote:"Wall Street English — Learning &amp; Development",
+  personName:"Jack", personTag:"Career Learner · New prospect",
+  moodLabel:"How Jack seems", moodInitial:"Polite, a little guarded.",
+  stepNo:"Choice {n} of {total}",
+  continueBtn:"Continue", lastBtn:"See how you did",
+  tryDifferent:"Try a different answer",
+  debriefH2:"This is the whole idea.",
+  debriefP1:"You waited until the end to talk about our course — and by then, Jack was ready to listen. That is the habit. Understand the person first. Find the feeling behind their words. Then show how we can help. When you offer the course too soon, the prospect may go quiet. When you ask more questions instead, they open up and tell you more.",
+  debriefP2:"Our course has not changed. What changed was you. You linked it to the real reason Jack came to see us: he wants to feel confident, and he wants to be respected.",
+  debriefRecap:"When Jack arrived, he was at <b>Value Acknowledged</b> — “I can see this is worth doing.” Your questions moved him to the next stage, <b>Choices Reviewed</b> — “I know who to do this with.”",
+  restartBtn:"Try it again",
+  stages:["Attention Grabbed","Value Acknowledged","Choices Reviewed","Cost/Risk/Effort","Price Considered","Desire to Buy","Value Gained"],
+  steps:[
+   {says:"I saw your ad online. My English is okay, but… to be honest, I need to fix it. At work, other people get promoted, and I don't.",
     mood:"Polite, but a little careful.",
-    stageNow:1, stageDone:[],
     railcap:"Jack is at the Value Acknowledged stage. He came to the meeting, but he is not sure yet that we are the right choice.",
     prompt:"What have you just heard?",
-    opts:[
-      {t:"A need — he has asked us to help him improve.", v:"soft",
-       f:"<b>Not quite.</b> He told us what is wrong, but he has not said what he wants, and he has not asked for help. So this is an issue, not a need."},
-      {t:"An issue — a problem with where he is now.", v:"strong",
-       f:"<b>Yes.</b> It is negative, and it is about his life right now — that is an issue. And notice: he has not asked for anything yet. So it is much too early to talk about our course."},
-      {t:"A sign to show him our flexible course.", v:"weak",
-       f:"<b>Wait a moment.</b> Talking about the course now is the fastest way to lose people like Jack. He has not opened up yet, and he has not asked for help."}
-    ]
-  },
-  {
-    says:"I have tried apps before. Nothing really worked.",
+    opts:["A need — he has asked us to help him improve.",
+          "An issue — a problem with where he is now.",
+          "A sign to show him our flexible course."],
+    fbs:["<b>Not quite.</b> He told us what is wrong, but he has not said what he wants, and he has not asked for help. So this is an issue, not a need.",
+         "<b>Yes.</b> It is negative, and it is about his life right now — that is an issue. And notice: he has not asked for anything yet. So it is much too early to talk about our course.",
+         "<b>Wait a moment.</b> Talking about the course now is the fastest way to lose people like Jack. He has not opened up yet, and he has not asked for help."]},
+   {says:"I have tried apps before. Nothing really worked.",
     mood:"Frustrated. He wants to know if you understand.",
-    stageNow:1, stageDone:[],
     railcap:"Jack is still at Value Acknowledged. What you do now decides if he moves forward — or steps back.",
     prompt:"Jack is frustrated, but he has not asked for help. What do you do?",
-    opts:[
-      {t:"Show him our course — it is made for busy people like him.", v:"weak", detour:true,
-       f:"<b>Watch what happens.</b> You talked about the course before Jack was ready. He nods to be polite — then he goes quiet. He gave you a problem, not a yes. Let's go back and try again."},
-      {t:"Ask a question, to understand what is really going on.", v:"strong",
-       f:"<b>That is the right move.</b> You stay curious, instead of selling. This is where the real conversation begins."},
-      {t:"Tell him his English already sounds fine.", v:"soft",
-       f:"<b>That is kind — but it closes the door.</b> If his English is fine, why did he come? You might make him feel he does not need us."}
-    ]
-  },
-  {
-    says:"…okay. What do you want to know?",
+    opts:["Show him our course — it is made for busy people like him.",
+          "Ask a question, to understand what is really going on.",
+          "Tell him his English already sounds fine."],
+    fbs:["<b>Watch what happens.</b> You talked about the course before Jack was ready. He nods to be polite — then he goes quiet. He gave you a problem, not a yes. Let's go back and try again.",
+         "<b>That is the right move.</b> You stay curious, instead of selling. This is where the real conversation begins.",
+         "<b>That is kind — but it closes the door.</b> If his English is fine, why did he come? You might make him feel he does not need us."]},
+   {says:"…okay. What do you want to know?",
     mood:"Ready to talk, if you ask the right way.",
-    stageNow:1, stageDone:[],
     railcap:"Jack is still talking with you. The right question now will show you the feeling underneath.",
     prompt:"Which question helps Jack open up?",
-    opts:[
-      {t:"\u201CHave you studied English before?\u201D", v:"soft",
-       f:"<b>This is a closed question.</b> Jack can answer with just \u201Cyes\u201D or \u201Cno\u201D, so you learn very little. Save these questions for checking a simple fact."},
-      {t:"\u201CCan I ask what happened recently, that made you want to fix this now?\u201D", v:"strong",
-       f:"<b>Open and friendly.</b> You invited Jack to tell his story — and to share the feeling behind it."},
-      {t:"\u201CSo you want a flexible schedule and good results, yes?\u201D", v:"weak",
-       f:"<b>You jumped to the answer too soon,</b> before you really understand Jack. Questions like this are useful — but later."}
-    ]
-  },
-  {
-    says:"Last month, someone got a promotion instead of me. He has less experience — but he speaks up in the English meetings, and I stay quiet. I just sat there, saying nothing. I felt… invisible. I don't want that to happen again.",
+    opts:["“Have you studied English before?”",
+          "“Can I ask what happened recently, that made you want to fix this now?”",
+          "“So you want a flexible schedule and good results, yes?”"],
+    fbs:["<b>This is a closed question.</b> Jack can answer with just “yes” or “no”, so you learn very little. Save these questions for checking a simple fact.",
+         "<b>Open and friendly.</b> You invited Jack to tell his story — and to share the feeling behind it.",
+         "<b>You jumped to the answer too soon,</b> before you really understand Jack. Questions like this are useful — but later."]},
+   {says:"Last month, someone got a promotion instead of me. He has less experience — but he speaks up in the English meetings, and I stay quiet. I just sat there, saying nothing. I felt… invisible. I don't want that to happen again.",
     mood:"Open. He has told you what really matters.",
-    stageNow:1, stageDone:[0,1], moving:true,
     railcap:"Jack has opened up. The real feeling is now clear — this is the moment he becomes ready.",
     prompt:"What is the real reason behind his words?",
-    opts:[
-      {t:"The practical reason — he wants the promotion and more money.", v:"soft",
-       f:"<b>That is true, and it is real.</b> But listen again: \u201Cinvisible\u201D, \u201CI don't want that again.\u201D The real reason is the feeling underneath."},
-      {t:"The feeling — he wants to feel confident and respected.", v:"strong",
-       f:"<b>Yes.</b> The promotion is the practical reason. But the feeling — wanting to be respected and seen — is what really drives him. Now, and only now, he is ready to hear how we can help."},
-      {t:"He is just upset; give him a moment.", v:"weak",
-       f:"<b>He is not just complaining.</b> This is the moment you were waiting for. He is asking for help — just not in those exact words."}
-    ]
-  },
-  {
-    says:"So… can you really help me with this?",
+    opts:["The practical reason — he wants the promotion and more money.",
+          "The feeling — he wants to feel confident and respected.",
+          "He is just upset; give him a moment."],
+    fbs:["<b>That is true, and it is real.</b> But listen again: “invisible”, “I don't want that again.” The real reason is the feeling underneath.",
+         "<b>Yes.</b> The promotion is the practical reason. But the feeling — wanting to be respected and seen — is what really drives him. Now, and only now, he is ready to hear how we can help.",
+         "<b>He is not just complaining.</b> This is the moment you were waiting for. He is asking for help — just not in those exact words."]},
+   {says:"So… can you really help me with this?",
     mood:"Ready to listen.",
-    stageNow:2, stageDone:[0,1],
     railcap:"Jack is moving toward Choices Reviewed. Now connect a benefit to what he told you.",
     prompt:"Now connect our course to what Jack really needs. Which answer works best?",
-    opts:[
-      {t:"\u201CWe have video lessons, qualified teachers, and small classes.\u201D", v:"weak",
-       f:"<b>Every word is true — but it is just a list of features.</b> Jack will not see himself in it."},
-      {t:"\u201CYour time is short, so you can study around work, at your own pace. And your teacher helps you with the exact English you need for meetings — so you can speak up, and be seen.\u201D", v:"strong",
-       f:"<b>Yes.</b> These are the same features as the first answer — but now they connect to what Jack wants: confidence and respect. That makes them a benefit, on the Personalized and Supportive pillars."},
-      {t:"\u201COur method has almost 50 years of history and 3 million students.\u201D", v:"soft",
-       f:"<b>Impressive — and it shows we are Effective.</b> But that is not what Jack needs to hear right now. He needs to hear about confidence, and being seen."}
-    ]
-  }
-];
+    opts:["“We have video lessons, qualified teachers, and small classes.”",
+          "“Your time is short, so you can study around work, at your own pace. And your teacher helps you with the exact English you need for meetings — so you can speak up, and be seen.”",
+          "“Our method has almost 50 years of history and 3 million students.”"],
+    fbs:["<b>Every word is true — but it is just a list of features.</b> Jack will not see himself in it.",
+         "<b>Yes.</b> These are the same features as the first answer — but now they connect to what Jack wants: confidence and respect. That makes them a benefit, on the Personalized and Supportive pillars.",
+         "<b>Impressive — and it shows we are Effective.</b> But that is not what Jack needs to hear right now. He needs to hear about confidence, and being seen."]}
+  ]
+},
+
+/* ---------------------------------------------------------------- Italiano */
+it:{
+  lang:"it",
+  fs:{ enter:"Schermo intero", exit:"Esci da schermo intero", newtab:"Apri in una nuova scheda", hint:"Premi F11 per riempire lo schermo" },
+  eyebrow:"Fondamenti di vendita · Pratica",
+  title:"Il primo appuntamento di Jack",
+  lede:"Jack ha visto il nostro annuncio e ha fissato un appuntamento. Oggi il consulente sei tu. Sai già che è un Career Learner — ma non è da lì che si comincia. Leggi quello che dice. Scegli che cosa fare dopo. Osserva come cambia la conversazione a ogni scelta. Non c'è punteggio. Quello che conta è la scelta che fai.",
+  pill:"Circa 4 minuti · 5 scelte",
+  introBody:"Qui pratichi un'abitudine semplice — l'abitudine che trasforma più appuntamenti in vendite. Prima capisci la persona. Poi scopri che cosa le sta davvero a cuore. Solo dopo, mostra come possiamo aiutarla. Fallo in quest'ordine e sentirai la differenza.",
+  startBtn:"Siediti con Jack",
+  footnote:"Wall Street English — Learning &amp; Development",
+  personName:"Jack", personTag:"Career Learner · Nuovo prospect",
+  moodLabel:"Come appare Jack", moodInitial:"Cordiale, un po' sulle sue.",
+  stepNo:"Scelta {n} di {total}",
+  continueBtn:"Continua", lastBtn:"Vedi come è andata",
+  tryDifferent:"Prova un'altra risposta",
+  debriefH2:"Il senso è tutto qui.",
+  debriefP1:"Hai aspettato la fine per parlare del nostro corso — e a quel punto Jack era pronto ad ascoltare. È questa l'abitudine. Prima capisci la persona. Trova l'emozione dietro le sue parole. Poi mostra come possiamo aiutarla. Quando proponi il corso troppo presto, il prospect può chiudersi. Quando invece fai altre domande, si apre e ti racconta di più.",
+  debriefP2:"Il nostro corso non è cambiato. Sei cambiato tu. L'hai collegato alla vera ragione per cui Jack è venuto da noi: vuole sentirsi sicuro di sé e vuole essere rispettato.",
+  debriefRecap:"Quando Jack è arrivato, era alla fase <b>Value Acknowledged</b> — «Vedo che vale la pena farlo». Le tue domande lo hanno portato alla fase successiva, <b>Choices Reviewed</b> — «So con chi farlo».",
+  restartBtn:"Riprova",
+  stages:["Attention Grabbed","Value Acknowledged","Choices Reviewed","Cost/Risk/Effort","Price Considered","Desire to Buy","Value Gained"],
+  steps:[
+   {says:"Ho visto il vostro annuncio online. Il mio inglese è discreto, ma… a essere sincero, devo sistemarlo. Al lavoro gli altri vengono promossi, io no.",
+    mood:"Cordiale, ma un po' guardingo.",
+    railcap:"Jack è alla fase Value Acknowledged. È venuto all'incontro, ma non è ancora sicuro che siamo la scelta giusta.",
+    prompt:"Che cosa hai appena sentito?",
+    opts:["Un bisogno — ci ha chiesto di aiutarlo a migliorare.",
+          "Un problema — una difficoltà nella sua situazione attuale.",
+          "Un segnale per mostrargli il nostro corso flessibile."],
+    fbs:["<b>Non proprio.</b> Ci ha detto che cosa non va, ma non ha detto che cosa vuole e non ha chiesto aiuto. Quindi è un problema, non un bisogno.",
+         "<b>Sì.</b> È negativo e riguarda la sua vita adesso — questo è un problema. E nota: non ha ancora chiesto nulla. Quindi è decisamente troppo presto per parlare del nostro corso.",
+         "<b>Un momento.</b> Parlare del corso adesso è il modo più rapido per perdere persone come Jack. Non si è ancora aperto e non ha chiesto aiuto."]},
+   {says:"Ho già provato delle app. Non ha funzionato davvero niente.",
+    mood:"Frustrato. Vuole capire se lo comprendi.",
+    railcap:"Jack è ancora a Value Acknowledged. Quello che fai adesso decide se va avanti — o fa un passo indietro.",
+    prompt:"Jack è frustrato, ma non ha chiesto aiuto. Che cosa fai?",
+    opts:["Mostragli il nostro corso — è fatto per persone impegnate come lui.",
+          "Fai una domanda, per capire che cosa sta succedendo davvero.",
+          "Digli che il suo inglese sembra già buono."],
+    fbs:["<b>Guarda che cosa succede.</b> Hai parlato del corso prima che Jack fosse pronto. Annuisce per educazione — e poi si chiude. Ti ha dato un problema, non un sì. Torniamo indietro e riproviamo.",
+         "<b>È la mossa giusta.</b> Resti curioso invece di vendere. È qui che inizia la conversazione vera.",
+         "<b>È gentile — ma chiude la porta.</b> Se il suo inglese va bene, perché è venuto? Rischi di fargli sentire che non ha bisogno di noi."]},
+   {says:"…va bene. Che cosa vuole sapere?",
+    mood:"Pronto a parlare, se glielo chiedi nel modo giusto.",
+    railcap:"Jack sta ancora parlando con te. La domanda giusta adesso ti mostrerà l'emozione che c'è sotto.",
+    prompt:"Quale domanda aiuta Jack ad aprirsi?",
+    opts:["«Ha già studiato inglese in passato?»",
+          "«Posso chiederle che cosa è successo di recente che le ha fatto venire voglia di risolverlo adesso?»",
+          "«Quindi vuole orari flessibili e buoni risultati, giusto?»"],
+    fbs:["<b>Questa è una domanda chiusa.</b> Jack può rispondere solo «sì» o «no», quindi scopri pochissimo. Tieni queste domande per verificare un dato semplice.",
+         "<b>Aperta e cordiale.</b> Hai invitato Jack a raccontare la sua storia — e a condividere l'emozione che c'è dietro.",
+         "<b>Sei saltato alla risposta troppo presto,</b> prima di capire davvero Jack. Domande così sono utili — ma più avanti."]},
+   {says:"Il mese scorso hanno promosso un altro al posto mio. Ha meno esperienza — ma lui parla nelle riunioni in inglese, io resto zitto. Sono rimasto lì seduto, senza dire niente. Mi sono sentito… invisibile. Non voglio che succeda di nuovo.",
+    mood:"Aperto. Ti ha detto che cosa conta davvero.",
+    railcap:"Jack si è aperto. L'emozione vera adesso è chiara — è il momento in cui diventa pronto.",
+    prompt:"Qual è la vera ragione dietro le sue parole?",
+    opts:["La ragione pratica — vuole la promozione e più soldi.",
+          "L'emozione — vuole sentirsi sicuro di sé e rispettato.",
+          "È solo arrabbiato; lasciagli un momento."],
+    fbs:["<b>È vero, ed è reale.</b> Ma riascolta: «invisibile», «non voglio che succeda di nuovo». La vera ragione è l'emozione che c'è sotto.",
+         "<b>Sì.</b> La promozione è la ragione pratica. Ma l'emozione — voler essere rispettato e visto — è ciò che lo muove davvero. Adesso, e solo adesso, è pronto a sentire come possiamo aiutarlo.",
+         "<b>Non si sta solo lamentando.</b> Questo è il momento che stavi aspettando. Sta chiedendo aiuto — solo non con queste parole esatte."]},
+   {says:"Allora… potete davvero aiutarmi con questo?",
+    mood:"Pronto ad ascoltare.",
+    railcap:"Jack si sta muovendo verso Choices Reviewed. Ora collega un beneficio a ciò che ti ha detto.",
+    prompt:"Adesso collega il nostro corso a ciò di cui Jack ha davvero bisogno. Quale risposta funziona meglio?",
+    opts:["«Abbiamo videolezioni, insegnanti qualificati e classi ridotte.»",
+          "«Ha poco tempo, quindi può studiare intorno al lavoro, al suo ritmo. E il suo insegnante la aiuta con l'inglese esatto che le serve nelle riunioni — così può intervenire ed essere notato.»",
+          "«Il nostro metodo ha quasi 50 anni di storia e 3 milioni di studenti.»"],
+    fbs:["<b>Ogni parola è vera — ma è solo un elenco di caratteristiche.</b> Jack non ci si riconoscerà.",
+         "<b>Sì.</b> Sono le stesse caratteristiche della prima risposta — ma ora si collegano a ciò che Jack vuole: sicurezza e rispetto. Questo le rende un beneficio, sui pilastri Personalized e Supportive.",
+         "<b>Impressionante — e dimostra che siamo Effective.</b> Ma non è ciò che Jack ha bisogno di sentire adesso. Ha bisogno di sentir parlare di sicurezza e di essere visto."]}
+  ]
+},
+
+/* -------------------------------------------------------------- Português */
+pt:{
+  lang:"pt",
+  fs:{ enter:"Ecrã inteiro", exit:"Sair do ecrã inteiro", newtab:"Abrir num novo separador", hint:"Prima F11 para preencher o ecrã" },
+  eyebrow:"Fundamentos de vendas · Prática",
+  title:"A primeira reunião do Jack",
+  lede:"O Jack viu o nosso anúncio e marcou uma reunião. Hoje, o consultor é você. Já sabe que ele é um Career Learner — mas não é por aí que se começa. Leia o que ele diz. Escolha o que fazer a seguir. Repare em como a conversa muda a cada escolha. Não há pontuação. O que conta é a escolha que faz.",
+  pill:"Cerca de 4 minutos · 5 escolhas",
+  introBody:"Aqui pratica um hábito simples — o hábito que transforma mais reuniões em vendas. Primeiro, compreenda a pessoa. Depois descubra o que realmente lhe importa. Só depois disso, mostre como podemos ajudar. Faça-o por esta ordem e vai sentir a diferença.",
+  startBtn:"Sente-se com o Jack",
+  footnote:"Wall Street English — Learning &amp; Development",
+  personName:"Jack", personTag:"Career Learner · Novo prospeto",
+  moodLabel:"Como o Jack parece", moodInitial:"Simpático, um pouco reservado.",
+  stepNo:"Escolha {n} de {total}",
+  continueBtn:"Continuar", lastBtn:"Ver como correu",
+  tryDifferent:"Tentar outra resposta",
+  debriefH2:"A ideia é toda esta.",
+  debriefP1:"Esperou até ao fim para falar do nosso curso — e nessa altura o Jack já estava pronto a ouvir. É esse o hábito. Compreenda primeiro a pessoa. Encontre o sentimento por trás das palavras. Depois mostre como podemos ajudar. Quando propõe o curso cedo demais, o prospeto pode fechar-se. Quando faz mais perguntas, abre-se e conta-lhe mais.",
+  debriefP2:"O nosso curso não mudou. O que mudou foi você. Ligou-o à verdadeira razão pela qual o Jack nos veio ver: quer sentir-se confiante e quer ser respeitado.",
+  debriefRecap:"Quando o Jack chegou, estava em <b>Value Acknowledged</b> — “Vejo que vale a pena fazer isto.” As suas perguntas levaram-no à fase seguinte, <b>Choices Reviewed</b> — “Já sei com quem o fazer.”",
+  restartBtn:"Tentar de novo",
+  stages:["Attention Grabbed","Value Acknowledged","Choices Reviewed","Cost/Risk/Effort","Price Considered","Desire to Buy","Value Gained"],
+  steps:[
+   {says:"Vi o vosso anúncio online. O meu inglês é razoável, mas… para ser sincero, preciso de o corrigir. No trabalho, outras pessoas são promovidas e eu não.",
+    mood:"Simpático, mas um pouco cauteloso.",
+    railcap:"O Jack está na fase Value Acknowledged. Veio à reunião, mas ainda não tem a certeza de que somos a escolha certa.",
+    prompt:"O que acabou de ouvir?",
+    opts:["Uma necessidade — pediu-nos ajuda para melhorar.",
+          "Um problema — uma dificuldade na situação atual dele.",
+          "Um sinal para lhe mostrar o nosso curso flexível."],
+    fbs:["<b>Não exatamente.</b> Disse-nos o que está mal, mas não disse o que quer e não pediu ajuda. Portanto isto é um problema, não uma necessidade.",
+         "<b>Sim.</b> É negativo e é sobre a vida dele agora — isso é um problema. E repare: ainda não pediu nada. Por isso é demasiado cedo para falar do nosso curso.",
+         "<b>Espere um momento.</b> Falar do curso agora é a forma mais rápida de perder pessoas como o Jack. Ainda não se abriu e não pediu ajuda."]},
+   {says:"Já experimentei aplicações. Nada resultou mesmo.",
+    mood:"Frustrado. Quer saber se você compreende.",
+    railcap:"O Jack continua em Value Acknowledged. O que fizer agora decide se avança — ou recua.",
+    prompt:"O Jack está frustrado, mas não pediu ajuda. O que faz?",
+    opts:["Mostrar-lhe o nosso curso — é feito para pessoas ocupadas como ele.",
+          "Fazer uma pergunta, para perceber o que se passa mesmo.",
+          "Dizer-lhe que o inglês dele já soa bem."],
+    fbs:["<b>Veja o que acontece.</b> Falou do curso antes de o Jack estar pronto. Ele acena por educação — e depois cala-se. Deu-lhe um problema, não um sim. Vamos voltar atrás e tentar de novo.",
+         "<b>É a jogada certa.</b> Mantém-se curioso em vez de vender. É aqui que começa a conversa a sério.",
+         "<b>É simpático — mas fecha a porta.</b> Se o inglês dele está bem, porque é que veio? Pode fazê-lo sentir que não precisa de nós."]},
+   {says:"…está bem. O que quer saber?",
+    mood:"Pronto a falar, se perguntar da forma certa.",
+    railcap:"O Jack continua a falar consigo. A pergunta certa agora vai mostrar-lhe o sentimento por baixo.",
+    prompt:"Que pergunta ajuda o Jack a abrir-se?",
+    opts:["“Já estudou inglês antes?”",
+          "“Posso perguntar o que aconteceu recentemente, que o fez querer resolver isto agora?”",
+          "“Então quer horários flexíveis e bons resultados, certo?”"],
+    fbs:["<b>Esta é uma pergunta fechada.</b> O Jack pode responder só “sim” ou “não”, por isso fica a saber muito pouco. Guarde estas perguntas para confirmar um facto simples.",
+         "<b>Aberta e simpática.</b> Convidou o Jack a contar a história dele — e a partilhar o sentimento por trás.",
+         "<b>Saltou para a resposta cedo demais,</b> antes de compreender mesmo o Jack. Perguntas assim são úteis — mas mais tarde."]},
+   {says:"No mês passado, promoveram outra pessoa em vez de mim. Tem menos experiência — mas fala nas reuniões em inglês e eu fico calado. Fiquei ali sentado, sem dizer nada. Senti-me… invisível. Não quero que isso volte a acontecer.",
+    mood:"Aberto. Disse-lhe o que realmente importa.",
+    railcap:"O Jack abriu-se. O sentimento verdadeiro está agora claro — é o momento em que fica pronto.",
+    prompt:"Qual é a verdadeira razão por trás das palavras dele?",
+    opts:["A razão prática — quer a promoção e mais dinheiro.",
+          "O sentimento — quer sentir-se confiante e respeitado.",
+          "Está só chateado; dê-lhe um momento."],
+    fbs:["<b>É verdade, e é real.</b> Mas ouça outra vez: “invisível”, “não quero que volte a acontecer”. A verdadeira razão é o sentimento por baixo.",
+         "<b>Sim.</b> A promoção é a razão prática. Mas o sentimento — querer ser respeitado e visto — é o que realmente o move. Agora, e só agora, está pronto para ouvir como podemos ajudar.",
+         "<b>Ele não se está só a queixar.</b> Este é o momento por que esperava. Está a pedir ajuda — só não com estas palavras exatas."]},
+   {says:"Então… conseguem mesmo ajudar-me com isto?",
+    mood:"Pronto a ouvir.",
+    railcap:"O Jack está a avançar para Choices Reviewed. Agora ligue um benefício ao que ele lhe contou.",
+    prompt:"Agora ligue o nosso curso àquilo de que o Jack realmente precisa. Que resposta funciona melhor?",
+    opts:["“Temos videoaulas, professores qualificados e turmas pequenas.”",
+          "“O seu tempo é curto, por isso pode estudar à volta do trabalho, ao seu ritmo. E o seu professor ajuda-o com o inglês exato de que precisa nas reuniões — para poder intervir e ser notado.”",
+          "“O nosso método tem quase 50 anos de história e 3 milhões de alunos.”"],
+    fbs:["<b>Cada palavra é verdade — mas é só uma lista de características.</b> O Jack não se vai ver nela.",
+         "<b>Sim.</b> São as mesmas características da primeira resposta — mas agora ligam-se ao que o Jack quer: confiança e respeito. Isso transforma-as num benefício, nos pilares Personalized e Supportive.",
+         "<b>Impressionante — e mostra que somos Effective.</b> Mas não é o que o Jack precisa de ouvir agora. Precisa de ouvir falar de confiança e de ser notado."]}
+  ]
+},
+/* ---------------------------------------------------------------- Español */
+es:{
+  lang:"es",
+  fs:{ enter:"Pantalla completa", exit:"Salir de pantalla completa", newtab:"Abrir en una pestaña nueva", hint:"Pulsa F11 para ocupar toda la pantalla" },
+  eyebrow:"Fundamentos de venta · Práctica",
+  title:"La primera cita de Jack",
+  lede:"Jack vio nuestro anuncio y pidió una cita. Hoy, el consultor eres tú. Ya sabes que es un Career Learner — pero no es ahí donde se empieza. Lee lo que dice. Elige qué hacer después. Fíjate en cómo cambia la conversación con cada elección. No hay puntuación. Lo que importa es la elección que haces.",
+  pill:"Unos 4 minutos · 5 elecciones",
+  introBody:"Aquí practicas un hábito sencillo — el hábito que convierte más citas en ventas. Primero, comprende a la persona. Luego averigua qué le importa de verdad. Solo después de eso, muestra cómo podemos ayudar. Hazlo en este orden y notarás la diferencia.",
+  startBtn:"Siéntate con Jack",
+  footnote:"Wall Street English — Learning &amp; Development",
+  personName:"Jack", personTag:"Career Learner · Nuevo prospecto",
+  moodLabel:"Cómo se ve Jack", moodInitial:"Amable, un poco reservado.",
+  stepNo:"Elección {n} de {total}",
+  continueBtn:"Continuar", lastBtn:"Ver cómo lo has hecho",
+  tryDifferent:"Prueba otra respuesta",
+  debriefH2:"La idea es justo esta.",
+  debriefP1:"Esperaste hasta el final para hablar de nuestro curso — y para entonces Jack ya estaba listo para escuchar. Ese es el hábito. Comprende primero a la persona. Encuentra el sentimiento detrás de sus palabras. Luego muestra cómo podemos ayudar. Cuando ofreces el curso demasiado pronto, el prospecto puede cerrarse. Cuando en cambio haces más preguntas, se abre y te cuenta más.",
+  debriefP2:"Nuestro curso no ha cambiado. Lo que cambió fuiste tú. Lo conectaste con la razón real por la que Jack vino a vernos: quiere sentirse seguro y quiere que le respeten.",
+  debriefRecap:"Cuando Jack llegó, estaba en <b>Value Acknowledged</b> — «Veo que merece la pena hacerlo». Tus preguntas lo llevaron a la siguiente fase, <b>Choices Reviewed</b> — «Ya sé con quién hacerlo».",
+  restartBtn:"Inténtalo otra vez",
+  stages:["Attention Grabbed","Value Acknowledged","Choices Reviewed","Cost/Risk/Effort","Price Considered","Desire to Buy","Value Gained"],
+  steps:[
+   {says:"Vi vuestro anuncio en internet. Mi inglés está bien, pero… siendo sincero, necesito arreglarlo. En el trabajo ascienden a otros y a mí no.",
+    mood:"Amable, pero algo cauto.",
+    railcap:"Jack está en la fase Value Acknowledged. Ha venido a la reunión, pero todavía no está seguro de que seamos la opción adecuada.",
+    prompt:"¿Qué acabas de escuchar?",
+    opts:["Una necesidad — nos ha pedido que le ayudemos a mejorar.",
+          "Un problema — una dificultad en su situación actual.",
+          "Una señal para enseñarle nuestro curso flexible."],
+    fbs:["<b>No exactamente.</b> Nos ha dicho qué va mal, pero no ha dicho qué quiere y no ha pedido ayuda. Así que esto es un problema, no una necesidad.",
+         "<b>Sí.</b> Es negativo y va sobre su vida ahora mismo — eso es un problema. Y fíjate: todavía no ha pedido nada. Así que es demasiado pronto para hablar de nuestro curso.",
+         "<b>Espera un momento.</b> Hablar del curso ahora es la forma más rápida de perder a personas como Jack. Todavía no se ha abierto y no ha pedido ayuda."]},
+   {says:"He probado aplicaciones antes. No funcionó nada de verdad.",
+    mood:"Frustrado. Quiere saber si le entiendes.",
+    railcap:"Jack sigue en Value Acknowledged. Lo que hagas ahora decide si avanza — o retrocede.",
+    prompt:"Jack está frustrado, pero no ha pedido ayuda. ¿Qué haces?",
+    opts:["Enseñarle nuestro curso — está hecho para gente ocupada como él.",
+          "Hacer una pregunta, para entender qué está pasando de verdad.",
+          "Decirle que su inglés ya suena bien."],
+    fbs:["<b>Mira lo que pasa.</b> Has hablado del curso antes de que Jack estuviera listo. Asiente por educación — y luego se calla. Te ha dado un problema, no un sí. Volvamos atrás y probemos otra vez.",
+         "<b>Ese es el movimiento correcto.</b> Sigues con curiosidad en lugar de vender. Aquí es donde empieza la conversación de verdad.",
+         "<b>Es amable — pero cierra la puerta.</b> Si su inglés está bien, ¿por qué ha venido? Puedes hacerle sentir que no nos necesita."]},
+   {says:"…vale. ¿Qué quieres saber?",
+    mood:"Listo para hablar, si se lo preguntas bien.",
+    railcap:"Jack sigue hablando contigo. La pregunta correcta ahora te mostrará el sentimiento que hay debajo.",
+    prompt:"¿Qué pregunta ayuda a Jack a abrirse?",
+    opts:["«¿Has estudiado inglés antes?»",
+          "«¿Puedo preguntarte qué ha pasado hace poco, que te ha hecho querer arreglar esto ahora?»",
+          "«Entonces quieres un horario flexible y buenos resultados, ¿verdad?»"],
+    fbs:["<b>Esta es una pregunta cerrada.</b> Jack puede responder solo «sí» o «no», así que aprendes muy poco. Guarda estas preguntas para comprobar un dato sencillo.",
+         "<b>Abierta y cercana.</b> Has invitado a Jack a contar su historia — y a compartir el sentimiento que hay detrás.",
+         "<b>Has saltado a la respuesta demasiado pronto,</b> antes de entender de verdad a Jack. Preguntas así son útiles — pero más adelante."]},
+   {says:"El mes pasado ascendieron a otro en vez de a mí. Tiene menos experiencia — pero él habla en las reuniones en inglés y yo me quedo callado. Me quedé ahí sentado, sin decir nada. Me sentí… invisible. No quiero que vuelva a pasar.",
+    mood:"Abierto. Te ha dicho lo que de verdad importa.",
+    railcap:"Jack se ha abierto. El sentimiento real ya está claro — este es el momento en que está listo.",
+    prompt:"¿Cuál es la razón real detrás de sus palabras?",
+    opts:["La razón práctica — quiere el ascenso y más dinero.",
+          "El sentimiento — quiere sentirse seguro y respetado.",
+          "Solo está disgustado; dale un momento."],
+    fbs:["<b>Es cierto, y es real.</b> Pero vuelve a escuchar: «invisible», «no quiero que vuelva a pasar». La razón real es el sentimiento que hay debajo.",
+         "<b>Sí.</b> El ascenso es la razón práctica. Pero el sentimiento — querer que le respeten y le vean — es lo que de verdad le mueve. Ahora, y solo ahora, está listo para oír cómo podemos ayudarle.",
+         "<b>No se está solo quejando.</b> Este es el momento que estabas esperando. Está pidiendo ayuda — solo que no con esas palabras exactas."]},
+   {says:"Entonces… ¿de verdad podéis ayudarme con esto?",
+    mood:"Listo para escuchar.",
+    railcap:"Jack avanza hacia Choices Reviewed. Ahora conecta un beneficio con lo que te ha contado.",
+    prompt:"Ahora conecta nuestro curso con lo que Jack necesita de verdad. ¿Qué respuesta funciona mejor?",
+    opts:["«Tenemos videolecciones, profesores cualificados y clases reducidas.»",
+          "«Tu tiempo es escaso, así que puedes estudiar alrededor del trabajo, a tu ritmo. Y tu profesor te ayuda con el inglés exacto que necesitas en las reuniones — para que puedas intervenir y que te vean.»",
+          "«Nuestro método tiene casi 50 años de historia y 3 millones de estudiantes.»"],
+    fbs:["<b>Cada palabra es verdad — pero es solo una lista de características.</b> Jack no se va a ver en ella.",
+         "<b>Sí.</b> Son las mismas características que la primera respuesta — pero ahora conectan con lo que Jack quiere: confianza y respeto. Eso las convierte en un beneficio, sobre los pilares Personalized y Supportive.",
+         "<b>Impresionante — y demuestra que somos Effective.</b> Pero no es lo que Jack necesita oír ahora. Necesita oír hablar de confianza y de que le vean."]}
+  ]
+},
+
+/* --------------------------------------------------------------- Français */
+fr:{
+  lang:"fr",
+  fs:{ enter:"Plein écran", exit:"Quitter le plein écran", newtab:"Ouvrir dans un nouvel onglet", hint:"Appuyez sur F11 pour remplir l'écran" },
+  eyebrow:"Fondamentaux de la vente · Pratique",
+  title:"Le premier rendez-vous de Jack",
+  lede:"Jack a vu notre annonce et a pris rendez-vous. Aujourd'hui, c'est vous le conseiller. Vous savez déjà que c'est un Career Learner — mais ce n'est pas par là que l'on commence. Lisez ce qu'il dit. Choisissez quoi faire ensuite. Observez comment la conversation change à chaque choix. Il n'y a pas de score. Ce qui compte, c'est le choix que vous faites.",
+  pill:"Environ 4 minutes · 5 choix",
+  introBody:"Ici vous pratiquez une habitude simple — celle qui transforme davantage de rendez-vous en ventes. D'abord, comprenez la personne. Ensuite, découvrez ce qui compte vraiment pour elle. Seulement après cela, montrez comment nous pouvons aider. Faites-le dans cet ordre et vous sentirez la différence.",
+  startBtn:"Asseyez-vous avec Jack",
+  footnote:"Wall Street English — Learning &amp; Development",
+  personName:"Jack", personTag:"Career Learner · Nouveau prospect",
+  moodLabel:"Comment Jack se présente", moodInitial:"Poli, un peu sur la réserve.",
+  stepNo:"Choix {n} sur {total}",
+  continueBtn:"Continuer", lastBtn:"Voir votre parcours",
+  tryDifferent:"Essayer une autre réponse",
+  debriefH2:"Toute l'idée est là.",
+  debriefP1:"Vous avez attendu la fin pour parler de notre cours — et à ce moment-là, Jack était prêt à écouter. C'est cela, l'habitude. Comprenez d'abord la personne. Trouvez l'émotion derrière ses mots. Puis montrez comment nous pouvons aider. Quand vous proposez le cours trop tôt, le prospect peut se fermer. Quand vous posez d'autres questions à la place, il s'ouvre et vous en dit davantage.",
+  debriefP2:"Notre cours n'a pas changé. Ce qui a changé, c'est vous. Vous l'avez relié à la vraie raison pour laquelle Jack est venu nous voir : il veut se sentir sûr de lui, et il veut être respecté.",
+  debriefRecap:"À son arrivée, Jack était à l'étape <b>Value Acknowledged</b> — « Je vois que cela vaut la peine ». Vos questions l'ont amené à l'étape suivante, <b>Choices Reviewed</b> — « Je sais avec qui le faire ».",
+  restartBtn:"Réessayer",
+  stages:["Attention Grabbed","Value Acknowledged","Choices Reviewed","Cost/Risk/Effort","Price Considered","Desire to Buy","Value Gained"],
+  steps:[
+   {says:"J'ai vu votre annonce en ligne. Mon anglais est correct, mais… pour être honnête, je dois le corriger. Au travail, les autres sont promus, et pas moi.",
+    mood:"Poli, mais un peu prudent.",
+    railcap:"Jack est à l'étape Value Acknowledged. Il est venu au rendez-vous, mais il n'est pas encore sûr que nous soyons le bon choix.",
+    prompt:"Qu'est-ce que vous venez d'entendre ?",
+    opts:["Un besoin — il nous a demandé de l'aider à progresser.",
+          "Un problème — une difficulté dans sa situation actuelle.",
+          "Un signal pour lui montrer notre cours flexible."],
+    fbs:["<b>Pas tout à fait.</b> Il nous a dit ce qui ne va pas, mais il n'a pas dit ce qu'il veut et il n'a pas demandé d'aide. C'est donc un problème, pas un besoin.",
+         "<b>Oui.</b> C'est négatif et cela concerne sa vie actuelle — c'est un problème. Et remarquez : il n'a encore rien demandé. Il est donc bien trop tôt pour parler de notre cours.",
+         "<b>Un instant.</b> Parler du cours maintenant est le moyen le plus rapide de perdre des personnes comme Jack. Il ne s'est pas encore ouvert et il n'a pas demandé d'aide."]},
+   {says:"J'ai déjà essayé des applis. Rien n'a vraiment marché.",
+    mood:"Frustré. Il veut savoir si vous comprenez.",
+    railcap:"Jack est toujours à Value Acknowledged. Ce que vous faites maintenant décide s'il avance — ou s'il recule.",
+    prompt:"Jack est frustré, mais il n'a pas demandé d'aide. Que faites-vous ?",
+    opts:["Lui montrer notre cours — il est fait pour les gens occupés comme lui.",
+          "Poser une question, pour comprendre ce qui se passe vraiment.",
+          "Lui dire que son anglais semble déjà bon."],
+    fbs:["<b>Regardez ce qui se passe.</b> Vous avez parlé du cours avant que Jack ne soit prêt. Il hoche la tête par politesse — puis il se tait. Il vous a donné un problème, pas un oui. Revenons en arrière et réessayons.",
+         "<b>C'est le bon geste.</b> Vous restez curieux au lieu de vendre. C'est là que la vraie conversation commence.",
+         "<b>C'est gentil — mais cela ferme la porte.</b> Si son anglais va bien, pourquoi est-il venu ? Vous risquez de lui faire sentir qu'il n'a pas besoin de nous."]},
+   {says:"…d'accord. Que voulez-vous savoir ?",
+    mood:"Prêt à parler, si vous demandez comme il faut.",
+    railcap:"Jack continue à vous parler. La bonne question maintenant vous montrera l'émotion en dessous.",
+    prompt:"Quelle question aide Jack à s'ouvrir ?",
+    opts:["« Avez-vous déjà étudié l'anglais ? »",
+          "« Puis-je vous demander ce qui s'est passé récemment, qui vous a donné envie de régler cela maintenant ? »",
+          "« Donc vous voulez des horaires souples et de bons résultats, c'est ça ? »"],
+    fbs:["<b>C'est une question fermée.</b> Jack peut répondre par « oui » ou « non », vous apprenez donc très peu. Gardez ces questions pour vérifier un fait simple.",
+         "<b>Ouverte et bienveillante.</b> Vous avez invité Jack à raconter son histoire — et à partager l'émotion qui va avec.",
+         "<b>Vous avez sauté à la réponse trop tôt,</b> avant de vraiment comprendre Jack. Ce type de question est utile — mais plus tard."]},
+   {says:"Le mois dernier, quelqu'un a été promu à ma place. Il a moins d'expérience — mais il prend la parole dans les réunions en anglais, et moi je reste silencieux. Je suis resté assis là, sans rien dire. Je me suis senti… invisible. Je ne veux pas que cela se reproduise.",
+    mood:"Ouvert. Il vous a dit ce qui compte vraiment.",
+    railcap:"Jack s'est ouvert. L'émotion réelle est maintenant claire — c'est le moment où il devient prêt.",
+    prompt:"Quelle est la vraie raison derrière ses mots ?",
+    opts:["La raison pratique — il veut la promotion et un meilleur salaire.",
+          "L'émotion — il veut se sentir sûr de lui et respecté.",
+          "Il est simplement contrarié ; laissez-lui un moment."],
+    fbs:["<b>C'est vrai, et c'est réel.</b> Mais réécoutez : « invisible », « je ne veux pas que cela se reproduise ». La vraie raison, c'est l'émotion en dessous.",
+         "<b>Oui.</b> La promotion est la raison pratique. Mais l'émotion — vouloir être respecté et vu — est ce qui le pousse vraiment. Maintenant, et seulement maintenant, il est prêt à entendre comment nous pouvons l'aider.",
+         "<b>Il ne fait pas que se plaindre.</b> C'est le moment que vous attendiez. Il demande de l'aide — simplement pas avec ces mots-là."]},
+   {says:"Alors… pouvez-vous vraiment m'aider là-dessus ?",
+    mood:"Prêt à écouter.",
+    railcap:"Jack avance vers Choices Reviewed. Reliez maintenant un bénéfice à ce qu'il vous a dit.",
+    prompt:"Reliez maintenant notre cours à ce dont Jack a vraiment besoin. Quelle réponse fonctionne le mieux ?",
+    opts:["« Nous avons des cours vidéo, des professeurs qualifiés et de petits groupes. »",
+          "« Votre temps est compté, vous pouvez donc étudier autour de votre travail, à votre rythme. Et votre professeur vous aide avec l'anglais précis dont vous avez besoin en réunion — pour prendre la parole et être vu. »",
+          "« Notre méthode a près de 50 ans d'histoire et 3 millions d'étudiants. »"],
+    fbs:["<b>Chaque mot est vrai — mais ce n'est qu'une liste de caractéristiques.</b> Jack ne s'y reconnaîtra pas.",
+         "<b>Oui.</b> Ce sont les mêmes caractéristiques que dans la première réponse — mais elles rejoignent maintenant ce que Jack veut : la confiance et le respect. Cela en fait un bénéfice, sur les piliers Personalized et Supportive.",
+         "<b>Impressionnant — et cela montre que nous sommes Effective.</b> Mais ce n'est pas ce que Jack a besoin d'entendre maintenant. Il a besoin qu'on lui parle de confiance et d'être vu."]}
+  ]
+},
+
+/* ----------------------------------------------------------------- العربية */
+ar:{
+  lang:"ar",
+  fs:{ enter:"ملء الشاشة", exit:"إنهاء ملء الشاشة", newtab:"فتح في تبويب جديد", hint:"اضغط F11 لملء الشاشة" },
+  eyebrow:"أساسيات البيع · تدريب",
+  title:"موعد جاك الأول",
+  lede:"رأى جاك إعلاننا وحجز موعدًا. اليوم، أنت المستشار. تعرف مسبقًا أنه Career Learner — لكن ليس من هنا تبدأ. اقرأ ما يقوله. اختر ما تفعله بعد ذلك. لاحظ كيف يتغيّر الحوار مع كل اختيار. لا توجد درجات. المهم هو الاختيار الذي تتخذه.",
+  pill:"نحو ٤ دقائق · ٥ اختيارات",
+  introBody:"هنا تتدرّب على عادة واحدة بسيطة — العادة التي تحوّل مزيدًا من المواعيد إلى مبيعات. أولًا، افهم الشخص. ثم اكتشف ما يهمّه حقًا. وبعد ذلك فقط، اعرض كيف يمكننا المساعدة. اتبع هذا الترتيب وستشعر بالفرق.",
+  startBtn:"اجلس مع جاك",
+  footnote:"Wall Street English — Learning &amp; Development",
+  personName:"جاك", personTag:"Career Learner · عميل محتمل جديد",
+  moodLabel:"كيف يبدو جاك", moodInitial:"مهذّب، ومتحفّظ قليلًا.",
+  stepNo:"الاختيار {n} من {total}",
+  continueBtn:"متابعة", lastBtn:"اعرض كيف كان أداؤك",
+  tryDifferent:"جرّب إجابة أخرى",
+  debriefH2:"هذه هي الفكرة كلها.",
+  debriefP1:"انتظرت حتى النهاية لتتحدث عن دورتنا — وعندها كان جاك مستعدًا للإصغاء. هذه هي العادة. افهم الشخص أولًا. ابحث عن الشعور الكامن خلف كلماته. ثم اعرض كيف يمكننا المساعدة. حين تعرض الدورة قبل أوانها، قد يصمت العميل المحتمل. وحين تسأل مزيدًا من الأسئلة بدلًا من ذلك، ينفتح ويخبرك بالمزيد.",
+  debriefP2:"دورتنا لم تتغيّر. الذي تغيّر هو أنت. لقد ربطتها بالسبب الحقيقي الذي جاء جاك من أجله: يريد أن يشعر بالثقة، ويريد أن يُحترم.",
+  debriefRecap:"حين وصل جاك، كان عند مرحلة <b>Value Acknowledged</b> — «أرى أن الأمر يستحق». أسئلتك نقلته إلى المرحلة التالية، <b>Choices Reviewed</b> — «أعرف مع مَن أفعل ذلك».",
+  restartBtn:"جرّب مرة أخرى",
+  stages:["Attention Grabbed","Value Acknowledged","Choices Reviewed","Cost/Risk/Effort","Price Considered","Desire to Buy","Value Gained"],
+  steps:[
+   {says:"رأيت إعلانكم على الإنترنت. إنجليزيتي لا بأس بها، لكن… لأكون صادقًا، أحتاج إلى إصلاحها. في العمل يُرقّى الآخرون، وأنا لا.",
+    mood:"مهذّب، لكنه حذر قليلًا.",
+    railcap:"جاك عند مرحلة Value Acknowledged. حضر الاجتماع، لكنه ليس واثقًا بعد من أننا الخيار الصحيح.",
+    prompt:"ماذا سمعت للتو؟",
+    opts:["حاجة — لقد طلب منا مساعدته على التحسّن.",
+          "مشكلة — صعوبة في وضعه الحالي.",
+          "إشارة لأعرض عليه دورتنا المرنة."],
+    fbs:["<b>ليس تمامًا.</b> أخبرنا بما هو خاطئ، لكنه لم يقل ماذا يريد ولم يطلب المساعدة. إذن هذه مشكلة لا حاجة.",
+         "<b>نعم.</b> إنه أمر سلبي ويتعلق بحياته الآن — وهذه مشكلة. ولاحظ: لم يطلب شيئًا بعد. لذا من المبكر جدًا الحديث عن دورتنا.",
+         "<b>تمهّل لحظة.</b> الحديث عن الدورة الآن هو أسرع طريقة لخسارة أشخاص مثل جاك. لم ينفتح بعد ولم يطلب المساعدة."]},
+   {says:"جرّبت تطبيقات من قبل. لم ينفع شيء منها حقًا.",
+    mood:"محبَط. يريد أن يعرف إن كنت تفهمه.",
+    railcap:"ما زال جاك عند Value Acknowledged. ما تفعله الآن يحدّد إن كان سيتقدّم — أم يتراجع.",
+    prompt:"جاك محبَط، لكنه لم يطلب المساعدة. ماذا تفعل؟",
+    opts:["اعرض عليه دورتنا — فهي مصمّمة لأشخاص مشغولين مثله.",
+          "اطرح سؤالًا، لتفهم ما يجري حقًا.",
+          "أخبره أن إنجليزيته تبدو جيدة بالفعل."],
+    fbs:["<b>انظر ماذا يحدث.</b> تحدثت عن الدورة قبل أن يكون جاك مستعدًا. يومئ برأسه من باب اللباقة — ثم يصمت. أعطاك مشكلة لا موافقة. لنعُد ونحاول مرة أخرى.",
+         "<b>هذه هي الخطوة الصحيحة.</b> بقيت فضوليًا بدل أن تبيع. هنا يبدأ الحوار الحقيقي.",
+         "<b>لطيف منك — لكنه يغلق الباب.</b> إن كانت إنجليزيته جيدة، فلماذا جاء؟ قد تجعله يشعر أنه لا يحتاج إلينا."]},
+   {says:"…حسنًا. ماذا تريد أن تعرف؟",
+    mood:"مستعد للحديث، إن سألته بالطريقة الصحيحة.",
+    railcap:"ما زال جاك يتحدث معك. السؤال الصحيح الآن سيكشف لك الشعور الكامن تحت السطح.",
+    prompt:"أي سؤال يساعد جاك على الانفتاح؟",
+    opts:["«هل درست الإنجليزية من قبل؟»",
+          "«هل لي أن أسألك ما الذي حدث مؤخرًا وجعلك ترغب في معالجة هذا الآن؟»",
+          "«إذن تريد جدولًا مرنًا ونتائج جيدة، صحيح؟»"],
+    fbs:["<b>هذا سؤال مغلق.</b> يستطيع جاك أن يجيب بـ«نعم» أو «لا» فقط، فلا تتعلم منه إلا القليل جدًا. احتفظ بمثل هذه الأسئلة للتحقق من معلومة بسيطة.",
+         "<b>مفتوح وودّي.</b> دعوت جاك إلى أن يروي قصته — وأن يشارك الشعور الكامن وراءها.",
+         "<b>قفزت إلى الإجابة مبكرًا جدًا،</b> قبل أن تفهم جاك حقًا. مثل هذه الأسئلة مفيدة — لكن لاحقًا."]},
+   {says:"الشهر الماضي حصل شخص آخر على الترقية بدلًا مني. خبرته أقل — لكنه يتحدث في الاجتماعات بالإنجليزية، وأنا أبقى صامتًا. جلست هناك دون أن أقول شيئًا. شعرت… بأنني غير مرئي. لا أريد أن يتكرر ذلك.",
+    mood:"منفتح. أخبرك بما يهمّه حقًا.",
+    railcap:"انفتح جاك. الشعور الحقيقي صار واضحًا الآن — هذه هي اللحظة التي يصبح فيها مستعدًا.",
+    prompt:"ما السبب الحقيقي خلف كلماته؟",
+    opts:["السبب العملي — يريد الترقية ومالًا أكثر.",
+          "الشعور — يريد أن يشعر بالثقة وأن يُحترم.",
+          "هو منزعج فحسب؛ امنحه لحظة."],
+    fbs:["<b>هذا صحيح، وهو حقيقي.</b> لكن أعد الاستماع: «غير مرئي»، «لا أريد أن يتكرر ذلك». السبب الحقيقي هو الشعور الكامن تحت السطح.",
+         "<b>نعم.</b> الترقية هي السبب العملي. أما الشعور — الرغبة في أن يُحترم ويُرى — فهو ما يحرّكه فعلًا. الآن، والآن فقط، صار مستعدًا لسماع كيف يمكننا مساعدته.",
+         "<b>هو لا يشتكي فحسب.</b> هذه هي اللحظة التي كنت تنتظرها. إنه يطلب المساعدة — لكن ليس بهذه الكلمات بالضبط."]},
+   {says:"إذن… هل تستطيعون فعلًا مساعدتي في هذا؟",
+    mood:"مستعد للإصغاء.",
+    railcap:"جاك يتقدّم نحو Choices Reviewed. الآن اربط فائدة بما أخبرك به.",
+    prompt:"الآن اربط دورتنا بما يحتاجه جاك حقًا. أي إجابة تنجح أكثر؟",
+    opts:["«لدينا دروس بالفيديو، ومعلمون مؤهلون، وصفوف صغيرة.»",
+          "«وقتك ضيّق، لذا يمكنك الدراسة حول عملك وبالوتيرة التي تناسبك. ومعلمك يساعدك بالإنجليزية التي تحتاجها تحديدًا في الاجتماعات — لتتحدث ولتُرى.»",
+          "«طريقتنا لها تاريخ يقارب ٥٠ عامًا و٣ ملايين طالب.»"],
+    fbs:["<b>كل كلمة صحيحة — لكنها مجرد قائمة بالخصائص.</b> لن يرى جاك نفسه فيها.",
+         "<b>نعم.</b> هذه هي الخصائص نفسها الواردة في الإجابة الأولى — لكنها الآن مرتبطة بما يريده جاك: الثقة والاحترام. وهذا ما يحوّلها إلى فائدة، على ركيزتَي Personalized وSupportive.",
+         "<b>مثير للإعجاب — ويُظهر أننا Effective.</b> لكن ليس هذا ما يحتاج جاك إلى سماعه الآن. يحتاج أن يسمع عن الثقة وعن أن يُرى."]}
+  ]
+}
+
+};
+
+const LANG_NAMES={en:"English",it:"Italiano",pt:"Português",es:"Español",fr:"Français",ar:"العربية"};
+const RTL=["ar"];
+
+function normalizeLang(l){
+  if(!l) return "en";
+  l=String(l).toLowerCase();
+  if(I18N[l]) return l;
+  const base=l.split("-")[0];
+  return I18N[base]?base:"en";
+}
+const LANG=normalizeLang(new URLSearchParams(location.search).get("lang")||navigator.language);
+document.documentElement.lang=LANG;
+document.documentElement.dir=RTL.indexOf(LANG)>=0?"rtl":"ltr";
+
+const UI=I18N[LANG];
+const STAGES=UI.stages;
+/* rebuild the steps from shared structure + this language's text */
+const STEPS=SHAPE.map((sh,i)=>{
+  const t=UI.steps[i];
+  const s={says:t.says, mood:t.mood, stageNow:sh.stageNow, stageDone:sh.stageDone,
+           railcap:t.railcap, prompt:t.prompt,
+           opts:t.opts.map((label,j)=>({t:label, v:sh.v[j], f:t.fbs[j]}))};
+  if(sh.moving) s.moving=true;
+  return s;
+});
+
+/* The markup carried its own copy until this pass; fill it from UI at load so
+   every learner-visible string lives in one place per language. */
+(function fillChrome(){
+  const set=(sel,val,html)=>{const el=document.querySelector(sel); if(el){ if(html) el.innerHTML=val; else el.textContent=val; }};
+  set("#intro .eyebrow",UI.eyebrow);
+  set("#intro h1",UI.title);
+  set("#intro .lede",UI.lede);
+  set("#intro .pill",UI.pill);
+  set("#intro .card-lg p",UI.introBody);
+  set("#intro .card-lg .btn",UI.startBtn);
+  document.querySelectorAll(".footnote").forEach(el=>el.innerHTML=UI.footnote);
+  set(".person .nm",UI.personName);
+  set(".person .tag",UI.personTag);
+  set(".person .mood b",UI.moodLabel);
+  set("#mood",UI.moodInitial);
+  set(".says .who",UI.personName);
+  set("#debrief .eyebrow",UI.eyebrow);
+  set("#debrief h2",UI.debriefH2);
+  const ps=document.querySelectorAll("#debrief .card-lg > p");
+  if(ps[0]) ps[0].textContent=UI.debriefP1;
+  if(ps[1]) ps[1].textContent=UI.debriefP2;
+  set("#debrief .recap",UI.debriefRecap,true);
+  set("#debrief .actions .btn",UI.restartBtn);
+  const img=document.querySelector(".person img"); if(img) img.alt=UI.personName;
+})();
 
 let i = 0;
 const $ = id => document.getElementById(id);
@@ -273,7 +766,7 @@ function drawRail(now, done, moving){
 
 function render(){
   const s = STEPS[i];
-  $("stepno").textContent = "Choice "+(i+1)+" of "+STEPS.length;
+  $("stepno").textContent = UI.stepNo.replace("{n}", i+1).replace("{total}", STEPS.length);
   $("saystext").textContent = s.says;
   $("mood").textContent = s.mood;
   $("prompt").textContent = s.prompt;
@@ -297,16 +790,16 @@ function choose(o, btn, s){
 
   const act=$("actions"); act.innerHTML="";
   if(o.v==="strong"){
-    const nextLabel = (i===STEPS.length-1) ? "See how you did" : "Continue";
+    const nextLabel = (i===STEPS.length-1) ? UI.lastBtn : UI.continueBtn;
     const nb=document.createElement("button"); nb.className="btn"; nb.textContent=nextLabel;
     nb.onclick=advance; act.appendChild(nb);
   } else if(o.detour){
     // felt consequence: Jack cools, rail does not advance
-    $("mood").textContent="Polite — but stepping back.";
-    const rb=document.createElement("button"); rb.className="btn ghost"; rb.textContent="Go back and try again";
+    $("mood").textContent=UI.moodInitial;
+    const rb=document.createElement("button"); rb.className="btn ghost"; rb.textContent=UI.tryDifferent;
     rb.onclick=()=>render(); act.appendChild(rb);
   } else {
-    const rb=document.createElement("button"); rb.className="btn ghost"; rb.textContent="Try a different answer";
+    const rb=document.createElement("button"); rb.className="btn ghost"; rb.textContent=UI.tryDifferent;
     rb.onclick=()=>reopen(); act.appendChild(rb);
   }
 }
@@ -323,6 +816,96 @@ function advance(){
 }
 
 function finish(){ $("scene").classList.add("hide"); $("debrief").classList.remove("hide"); window.scrollTo(0,0); }
+
+/* ===== fullscreen =====
+   The stage sizes itself to whatever box it is embedded in, and we do not
+   control that box. An LMS iframe taller than the learner's visible area puts
+   the lower half of the activity below the fold, where nothing inside the
+   iframe can detect it. This is the escape hatch.
+
+   It degrades fullscreen -> new tab -> hint, because an LMS may rewrite or
+   strip allowfullscreen on the iframe tag. Ported from SANDBOXTEMPLATE; the
+   toast and i18n lookups it relied on do not exist here, so the labels come
+   from the activity's own copy object and the hint borrows the button label. */
+const FS = UI.fs;
+const FS_W = 920, FS_H = 640;
+const fsBtn = document.getElementById("fsBtn");
+const fsLabelEl = fsBtn && fsBtn.querySelector(".fs-label");
+const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+// false when the embedding iframe carries no allowfullscreen
+const fsSupported = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+// about:srcdoc, blob: and data: cannot be reopened as a top-level document
+const fsCanPopOut = /^https?:$/.test(location.protocol);
+let fsMode = fsSupported ? "fullscreen" : (fsCanPopOut ? "popout" : "hint");
+let fsHintTimer;
+
+function syncFsLabel(){
+  if(!fsBtn) return;
+  const on = !!fsEl();
+  const t = fsMode === "popout" ? FS.newtab : on ? FS.exit : FS.enter;
+  fsLabelEl.textContent = t; fsBtn.title = t;
+  fsBtn.classList.toggle("is-on", on);
+  // aria-pressed describes a toggle; in popout mode this is a one-way action,
+  // so drop the attribute rather than lie with "false"
+  if(fsMode === "popout") fsBtn.removeAttribute("aria-pressed");
+  else fsBtn.setAttribute("aria-pressed", on ? "true" : "false");
+}
+// there is no toast component in these activities, so the hint borrows the
+// button's own label for a few seconds
+function fsHint(){
+  if(!fsBtn) return;
+  fsLabelEl.textContent = FS.hint; fsBtn.title = FS.hint;
+  clearTimeout(fsHintTimer); fsHintTimer = setTimeout(syncFsLabel, 4000);
+}
+function fsDemote(){ fsMode = fsCanPopOut ? "popout" : "hint"; syncFsLabel(); fsHint(); }
+
+/* Scale the stage rather than stretch it. This is a fixed 920xH design, so
+   plain fullscreen on a large monitor would just centre a postage stamp in a
+   huge field and read as broken. Text scales as vectors and nothing reflows. */
+/* This activity is a scrolling page, not a fixed stage, so there is nothing
+   to scale — fullscreen simply gives it more room. (.stage here is a rail
+   chip; scaling it would wreck the progress rail.) */
+function fitStage(){}
+
+function toggleFullscreen(){
+  if(fsMode === "hint"){ fsHint(); return; }
+  if(fsMode === "popout"){
+    // returns null when the iframe is sandboxed without allow-popups
+    if(!window.open(location.href, "_blank", "noopener")){ fsMode = "hint"; fsDemote(); }
+    return;
+  }
+  if(fsEl()){ (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+  /* documentElement, NOT .stage: element fullscreen forces width/height:100%
+     over the fixed design and paints an opaque black ::backdrop, which would
+     replace the activity's own ground. */
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen;
+  if(!req){ fsDemote(); return; }
+  // webkitRequestFullscreen returns undefined rather than a Promise, and a
+  // request can still be refused after fullscreenEnabled read true
+  Promise.resolve(req.call(el)).catch(fsDemote);
+}
+
+if(fsBtn) fsBtn.addEventListener("click", toggleFullscreen);
+/* The change event is the source of truth, never the click handler: Esc, F11,
+   a refused request and the window manager all change state without it. */
+["fullscreenchange","webkitfullscreenchange"].forEach(ev =>
+  document.addEventListener(ev, () => { syncFsLabel(); fitStage(); }));
+addEventListener("resize", fitStage);
+syncFsLabel(); fitStage();
+
+/* ----- language switcher ----- */
+(function(){
+  const sel=document.getElementById("langsel"); if(!sel) return;
+  Object.keys(I18N).forEach(c=>{
+    const o=document.createElement("option");
+    o.value=c; o.textContent=LANG_NAMES[c]||c; if(c===LANG) o.selected=true;
+    sel.appendChild(o);
+  });
+  sel.addEventListener("change",()=>{
+    const u=new URL(location.href); u.searchParams.set("lang",sel.value); location.href=u.toString();
+  });
+})();
 </script>
 </body>
 </html>
