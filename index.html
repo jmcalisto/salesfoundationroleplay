@@ -6,12 +6,16 @@
 <title>Jack's first appointment — Sales Foundations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&family=Fraunces:opsz,wght@144,500;144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&family=Lora:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#16304C; --ink2:#274A6D; --paper:#EAEEF3; --card:#FFFFFF;
     --line:#D5DEE8; --accent:#1F6FB2; --accent-d:#155A93;
     --gold:#BE8628; --good:#2E7D6B; --soft:#A9761B; --muted:#5C6B7B;
+    /* fullscreen affordance -- shared verbatim with the other activities.
+       Player chrome, so it keeps its own token rather than borrowing
+       --accent or --good. See STYLE_GUIDE.md. */
+    --fs-green:#127A47; --fs-green-deep:#0D5F37;
     --shadow:0 10px 34px rgba(16,48,76,.10);
   }
   *{box-sizing:border-box}
@@ -20,14 +24,15 @@
     background:var(--paper); color:var(--ink);
     font-family:"Plus Jakarta Sans",system-ui,sans-serif;
     line-height:1.55; -webkit-font-smoothing:antialiased;
-    padding:28px 18px 64px;
+    /* top padding clears the fixed fullscreen bar */
+    padding:66px 18px 64px;
   }
   .wrap{max-width:960px;margin:0 auto}
   .eyebrow{
     font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
     color:var(--accent);margin:0 0 6px;
   }
-  h1{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:clamp(28px,4.4vw,42px);
+  h1{font-family:"Lora",Georgia,serif;font-weight:600;font-size:clamp(28px,4.4vw,42px);
     line-height:1.05;margin:0 0 10px;letter-spacing:-.01em}
   .lede{color:var(--ink2);font-size:16.5px;max-width:62ch;margin:0 0 22px}
 
@@ -50,7 +55,7 @@
   .person img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;object-position:50% 32%;
     filter:saturate(1.02)}
   .person .meta{padding:14px 16px 16px}
-  .person .nm{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:22px;line-height:1}
+  .person .nm{font-family:"Lora",Georgia,serif;font-weight:600;font-size:22px;line-height:1}
   .person .tag{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.04em;
     text-transform:uppercase;margin-top:6px}
   .mood{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);
@@ -102,7 +107,7 @@
   /* intro + debrief */
   .card-lg{background:var(--card);border:1px solid var(--line);border-radius:18px;
     box-shadow:var(--shadow);padding:30px 30px 28px}
-  .card-lg h2{font-family:"Fraunces",Georgia,serif;font-optical-sizing:none;font-weight:600;font-size:28px;margin:0 0 12px}
+  .card-lg h2{font-family:"Lora",Georgia,serif;font-weight:600;font-size:28px;margin:0 0 12px}
   .card-lg p{font-size:16px;color:var(--ink2);margin:0 0 14px;max-width:64ch}
   .pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;
     background:#F1F6FB;color:var(--accent);border:1px solid #CFE0EF;border-radius:99px;padding:5px 12px}
@@ -119,17 +124,33 @@
      while the page scrolls, which is the case it exists for.
      NOTE: .stage in this file is a progress-rail chip, not a window frame.
      Never add .stage-targeting fullscreen CSS here. */
-  .fs-btn{position:fixed;top:12px;inset-inline-end:14px;z-index:50;
-    display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;
-    background:#fff;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;
-    box-shadow:var(--shadow);font:inherit;font-size:12.5px;font-weight:600;
-    white-space:nowrap;cursor:pointer}
-  .fs-btn:hover{background:#F1F6FB}
+  /* Fullscreen button -- centred at the top and deliberately loud. Solid green
+     rather than the page's accent blue, so it reads as player chrome rather
+     than as one more thing to click in the activity. Fixed rather than
+     absolute: this activity is a scrolling page, not a fixed-size stage, so
+     the button has to stay put as the learner scrolls.
+     Centring also frees the top-right corner, where it used to sit on top of
+     the language select at viewport widths near the .wrap width. */
+  /* A fixed bar rather than a bare fixed button. This activity is a scrolling
+     page, not a fixed-size stage, so a bare centred button would have the
+     content column sliding visibly underneath it -- it covered the "CHOICE n
+     OF 5" label. The bar is the page's own background, so content simply
+     disappears under it the way it would under any sticky header. */
+  .fs-bar{position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;justify-content:center;align-items:center;
+    padding:12px 0 10px;background:var(--paper)}
+  .fs-btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 16px;
+    background:var(--fs-green);color:#fff;border:0;border-radius:999px;
+    box-shadow:0 2px 10px rgba(18,122,71,.35);
+    font:inherit;font-size:13px;font-weight:800;letter-spacing:.02em;
+    white-space:nowrap;cursor:pointer;transition:background .15s,box-shadow .15s}
+  .fs-btn:hover{background:var(--fs-green-deep);box-shadow:0 4px 14px rgba(18,122,71,.45)}
+  .fs-btn:active{transform:translateY(1px)}
   .fs-btn:focus-visible{outline:3px solid #9cc4e6;outline-offset:2px}
-  .fs-btn.is-on{background:var(--accent);color:#fff}
-  /* Above ~1060px the button sits in the gutter beside the 960px .wrap; below
-     that it would land on the eyebrow and the rail. */
-  @media (max-width:1060px){ .eyebrow, #scene .rail{ padding-inline-end:145px } }
+  /* once fullscreen, it has done its job -- stop competing for attention */
+  .fs-btn.is-on{background:var(--accent);box-shadow:none}
+  /* the page starts below the button's row, so nothing needs to make way for
+     it any more -- the old right-gutter padding hack is gone with it */
 
   /* language switcher — top of the intro, where a learner chooses once.
      ?lang= stays the primary mechanism for LMS embeds. */
@@ -141,7 +162,7 @@
 
   /* ---------- right-to-left (Arabic) ----------
      This activity is a scrolling page with no photo-anchored speakers, so the
-     whole layout mirrors cleanly. Fraunces has no Arabic glyphs. */
+     whole layout mirrors cleanly. Lora has no Arabic glyphs. */
   [dir="rtl"] body{font-family:'Noto Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif}
   [dir="rtl"] h1,[dir="rtl"] .person .nm,[dir="rtl"] .card-lg h2{
     font-family:'Noto Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;font-weight:700}
@@ -150,7 +171,9 @@
 </style>
 </head>
 <body>
+<div class="fs-bar">
 <button class="fs-btn" id="fsBtn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg><span class="fs-label" aria-live="polite"></span></button>
+</div>
 <div class="wrap">
 
   <!-- INTRO -->
@@ -241,7 +264,7 @@ const I18N = {
 /* ---------------------------------------------------------------- English */
 en:{
   lang:"en",
-  fs:{ enter:"Fullscreen", exit:"Exit fullscreen", newtab:"Open in a new tab", hint:"Press F11 to fill your screen" },
+  fs:{ enter:"Fullscreen", exit:"Exit fullscreen", hint:"Press F11 to fill your screen" },
   eyebrow:"Sales Foundations · Practice",
   title:"Jack's first appointment",
   lede:"Jack saw our ad and booked an appointment. Today, you are the consultant. You already know he is a Career Learner — but that is not where you begin. Read what he says. Choose what to do next. Watch how the conversation changes with each choice. There is no score. What matters is the choice you make.",
@@ -317,7 +340,7 @@ en:{
 /* ---------------------------------------------------------------- Italiano */
 it:{
   lang:"it",
-  fs:{ enter:"Schermo intero", exit:"Esci da schermo intero", newtab:"Apri in una nuova scheda", hint:"Premi F11 per riempire lo schermo" },
+  fs:{ enter:"Schermo intero", exit:"Esci da schermo intero", hint:"Premi F11 per riempire lo schermo" },
   eyebrow:"Fondamenti di vendita · Pratica",
   title:"Il primo appuntamento di Jack",
   lede:"Jack ha visto il nostro annuncio e ha fissato un appuntamento. Oggi il consulente sei tu. Sai già che è un Career Learner — ma non è da lì che si comincia. Leggi quello che dice. Scegli che cosa fare dopo. Osserva come cambia la conversazione a ogni scelta. Non c'è punteggio. Quello che conta è la scelta che fai.",
@@ -393,7 +416,7 @@ it:{
 /* -------------------------------------------------------------- Português */
 pt:{
   lang:"pt",
-  fs:{ enter:"Ecrã inteiro", exit:"Sair do ecrã inteiro", newtab:"Abrir num novo separador", hint:"Prima F11 para preencher o ecrã" },
+  fs:{ enter:"Ecrã inteiro", exit:"Sair do ecrã inteiro", hint:"Prima F11 para preencher o ecrã" },
   eyebrow:"Fundamentos de vendas · Prática",
   title:"A primeira reunião do Jack",
   lede:"O Jack viu o nosso anúncio e marcou uma reunião. Hoje, o consultor é você. Já sabe que ele é um Career Learner — mas não é por aí que se começa. Leia o que ele diz. Escolha o que fazer a seguir. Repare em como a conversa muda a cada escolha. Não há pontuação. O que conta é a escolha que faz.",
@@ -468,7 +491,7 @@ pt:{
 /* ---------------------------------------------------------------- Español */
 es:{
   lang:"es",
-  fs:{ enter:"Pantalla completa", exit:"Salir de pantalla completa", newtab:"Abrir en una pestaña nueva", hint:"Pulsa F11 para ocupar toda la pantalla" },
+  fs:{ enter:"Pantalla completa", exit:"Salir de pantalla completa", hint:"Pulsa F11 para ocupar toda la pantalla" },
   eyebrow:"Fundamentos de venta · Práctica",
   title:"La primera cita de Jack",
   lede:"Jack vio nuestro anuncio y pidió una cita. Hoy, el consultor eres tú. Ya sabes que es un Career Learner — pero no es ahí donde se empieza. Lee lo que dice. Elige qué hacer después. Fíjate en cómo cambia la conversación con cada elección. No hay puntuación. Lo que importa es la elección que haces.",
@@ -544,7 +567,7 @@ es:{
 /* --------------------------------------------------------------- Français */
 fr:{
   lang:"fr",
-  fs:{ enter:"Plein écran", exit:"Quitter le plein écran", newtab:"Ouvrir dans un nouvel onglet", hint:"Appuyez sur F11 pour remplir l'écran" },
+  fs:{ enter:"Plein écran", exit:"Quitter le plein écran", hint:"Appuyez sur F11 pour remplir l'écran" },
   eyebrow:"Fondamentaux de la vente · Pratique",
   title:"Le premier rendez-vous de Jack",
   lede:"Jack a vu notre annonce et a pris rendez-vous. Aujourd'hui, c'est vous le conseiller. Vous savez déjà que c'est un Career Learner — mais ce n'est pas par là que l'on commence. Lisez ce qu'il dit. Choisissez quoi faire ensuite. Observez comment la conversation change à chaque choix. Il n'y a pas de score. Ce qui compte, c'est le choix que vous faites.",
@@ -620,7 +643,7 @@ fr:{
 /* ----------------------------------------------------------------- العربية */
 ar:{
   lang:"ar",
-  fs:{ enter:"ملء الشاشة", exit:"إنهاء ملء الشاشة", newtab:"فتح في تبويب جديد", hint:"اضغط F11 لملء الشاشة" },
+  fs:{ enter:"ملء الشاشة", exit:"إنهاء ملء الشاشة", hint:"اضغط F11 لملء الشاشة" },
   eyebrow:"أساسيات البيع · تدريب",
   title:"موعد جاك الأول",
   lede:"رأى جاك إعلاننا وحجز موعدًا. اليوم، أنت المستشار. تعرف مسبقًا أنه Career Learner — لكن ليس من هنا تبدأ. اقرأ ما يقوله. اختر ما تفعله بعد ذلك. لاحظ كيف يتغيّر الحوار مع كل اختيار. لا توجد درجات. المهم هو الاختيار الذي تتخذه.",
@@ -834,21 +857,16 @@ const fsLabelEl = fsBtn && fsBtn.querySelector(".fs-label");
 const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
 // false when the embedding iframe carries no allowfullscreen
 const fsSupported = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
-// about:srcdoc, blob: and data: cannot be reopened as a top-level document
-const fsCanPopOut = /^https?:$/.test(location.protocol);
-let fsMode = fsSupported ? "fullscreen" : (fsCanPopOut ? "popout" : "hint");
+let fsMode = fsSupported ? "fullscreen" : "hint";
 let fsHintTimer;
 
 function syncFsLabel(){
   if(!fsBtn) return;
   const on = !!fsEl();
-  const t = fsMode === "popout" ? FS.newtab : on ? FS.exit : FS.enter;
+  const t = on ? FS.exit : FS.enter;
   fsLabelEl.textContent = t; fsBtn.title = t;
   fsBtn.classList.toggle("is-on", on);
-  // aria-pressed describes a toggle; in popout mode this is a one-way action,
-  // so drop the attribute rather than lie with "false"
-  if(fsMode === "popout") fsBtn.removeAttribute("aria-pressed");
-  else fsBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  fsBtn.setAttribute("aria-pressed", on ? "true" : "false");
 }
 // there is no toast component in these activities, so the hint borrows the
 // button's own label for a few seconds
@@ -857,7 +875,7 @@ function fsHint(){
   fsLabelEl.textContent = FS.hint; fsBtn.title = FS.hint;
   clearTimeout(fsHintTimer); fsHintTimer = setTimeout(syncFsLabel, 4000);
 }
-function fsDemote(){ fsMode = fsCanPopOut ? "popout" : "hint"; syncFsLabel(); fsHint(); }
+function fsDemote(){ fsMode = "hint"; syncFsLabel(); fsHint(); }
 
 /* Scale the stage rather than stretch it. This is a fixed 920xH design, so
    plain fullscreen on a large monitor would just centre a postage stamp in a
@@ -869,11 +887,6 @@ function fitStage(){}
 
 function toggleFullscreen(){
   if(fsMode === "hint"){ fsHint(); return; }
-  if(fsMode === "popout"){
-    // returns null when the iframe is sandboxed without allow-popups
-    if(!window.open(location.href, "_blank", "noopener")){ fsMode = "hint"; fsDemote(); }
-    return;
-  }
   if(fsEl()){ (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
   /* documentElement, NOT .stage: element fullscreen forces width/height:100%
      over the fixed design and paints an opaque black ::backdrop, which would
